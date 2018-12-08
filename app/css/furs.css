@@ -1,0 +1,20 @@
+.pane
+{
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	width: 100%;
+}
+
+#chatBox
+{
+	flex: 1 0 auto;
+	overflow-y: auto;
+	height: 10px;
+}
+
+#messageBox
+{
+	width: 100%;
+	padding: 10px;
+}
