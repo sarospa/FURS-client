@@ -2,7 +2,7 @@
 
 var address = "http://73.154.255.201";
 var port = "8081";
-var name;
+var token;
 
 function displayMessage(data)
 {
@@ -27,23 +27,51 @@ function removeUser(data)
 
 $(document).ready(function()
 {
+	$("#txtName").focus();
+	
 	$("#btnPickName").on("click", function()
 	{
-		name = $("#txtName").val();
-		if (name.length > 0)
+		
+		var name = $("#txtName").val();
+		var password = $("#txtPassword").val();
+		if (name.length > 0 && password.length > 0)
 		{
-			$("#nameBox").hide();
-			$("#messageBox").show();
-			var chatSource = new EventSource(address + ":" + port + "/join/" + name);
-			chatSource.onmessage = function(event)
+			var action = $('input[name="login/register"]:checked').val();
+			$.ajax(
 			{
-				var data = JSON.parse(event.data)
-				console.log(data);
-				if (data.type == "message") displayMessage(data);
-				else if (data.type == "connect") addUser(data);
-				else if (data.type == "disconnect") removeUser(data);
-			}
-			$('#txtMessage').focus();
+				url: address + ":" + port + "/" + action + "/" + name + "/" + password,
+				method: "POST",
+				success: function(data)
+				{
+					if (data.type === "token")
+					{
+						token = data.content;
+						$("#nameBox").hide();
+						$("#messageBox").show();
+						var chatSource = new EventSource(address + ":" + port + "/open/" + token);
+						chatSource.onmessage = function(event)
+						{
+							var data = JSON.parse(event.data)
+							console.log(data);
+							if (data.type == "message") displayMessage(data);
+							else if (data.type == "connect") addUser(data);
+							else if (data.type == "disconnect") removeUser(data);
+						}
+						$('#txtMessage').focus();
+					}
+					else if (action === "register")
+					{
+						$('#loginError').html("That name is taken. Please choose a different name.");
+					}
+				},
+				error: function(req, status, err)
+				{
+					if (action === "join")
+					{
+						$('#loginError').html("Login credentials are not valid.");
+					}
+				}
+			});
 		}
 	});
 	
@@ -57,15 +85,17 @@ $(document).ready(function()
 			{
 				$.ajax(
 				{
-					url: address + ":" + port + "/send",
+					url: address + ":" + port + "/send/" + token,
 					method: "POST",
 					data:
 					{
-						"name": name,
 						"message": txtMessage.text()
+					},
+					success: function()
+					{
+						txtMessage.text("");
 					}
 				});
-				txtMessage.text("");
 			}
 			else if (txtName.is(":focus"))
 			{

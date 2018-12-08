@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Photon</title>
+		<title>FURS Client</title>
 
 		<!-- Stylesheets -->
 		<link rel="stylesheet" href="../node_modules/photonkit/dist/css/photon.css">
@@ -29,8 +29,20 @@
 					</div>
 					<div class="pane">
 						<div id="nameBox">
-							<label>What's your name?</label>
-							<input type="text" id="txtName"/>
+							<h2>Login/Register</h2>
+							<div id="loginError"></div>
+							<div>
+								<input type="radio" id="radioLogin" value="join" name="login/register" checked />
+								<label for="radioLogin">Log In</label>
+								<input type="radio" id="radioRegister" value="register" name="login/register" />
+								<label for="radioRegister">Register</label>
+							</div>
+							<div>
+								<label for="txtName">Name</label>
+								<input type="text" id="txtName"/>
+								<label for="txtPassword">Password</label>
+								<input type="text" id="txtPassword"/>
+							</div>
 							<button type="button" id="btnPickName">Let's go chat :V</button>
 						</div>
 						<div id="chatBox"></div>
