@@ -20,14 +20,14 @@
 			<!-- Your app's content goes inside .window-content -->
 			<div class="window-content">
 				<div class="pane-group">
-					<div id="connected-list" class="pane-sm sidebar">
+					<div id="personas-area" class="pane-sm sidebar">
 						<ul class="list-group">
 							<li class="list-group-header">
 								Users
 							</li>
 						</ul>
 					</div>
-					<div class="pane">
+					<div id="chat-area" class="pane">
 						<div id="nameBox">
 							<h2>Login/Register</h2>
 							<div id="loginError"></div>
@@ -47,8 +47,12 @@
 						</div>
 						<div id="chatBox"></div>
 						<div id="messageBox" style="display:none;">
-							<div contenteditable="true" id="txtMessage" class="form-control"></textarea>
+							<div contenteditable="true" id="txtMessage" class="form-control"></div>
 						</div>
+					</div>
+					<div id="room-area" class="pane-sm sidebar">
+						<h3 id="room-name"></h3>
+						<div id="room-desc"></div>
 					</div>
 				</div>
 			</div>

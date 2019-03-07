@@ -1,6 +1,6 @@
 'use strict';
 
-var address = "http://73.154.255.201";
+var address = "http://24.3.139.11";
 var port = "8081";
 var token;
 
@@ -17,12 +17,18 @@ function displayMessage(data)
 
 function addUser(data)
 {
-	$("#connected-list").append($("<li class='list-group-item'></li>").text(data.name).attr("id", "connected-" + data.name));
+	$("#personas-area").append($("<li class='list-group-item'></li>").text(data.name).attr("id", "connected-" + data.name));
 }
 
 function removeUser(data)
 {
-	$("#connected-list > #connected-" + data.name).first().remove();
+	$("#personas-area > #connected-" + data.name).first().remove();
+}
+
+function updateRoom(data)
+{
+	$('#room-name').text(data.name);
+	$('#room-desc').text(data.desc);
 }
 
 $(document).ready(function()
@@ -53,9 +59,10 @@ $(document).ready(function()
 						{
 							var data = JSON.parse(event.data)
 							console.log(data);
-							if (data.type == "message") displayMessage(data);
-							else if (data.type == "connect") addUser(data);
-							else if (data.type == "disconnect") removeUser(data);
+							if (data.type === "message") displayMessage(data);
+							else if (data.type === "connect") addUser(data);
+							else if (data.type === "disconnect") removeUser(data);
+							else if (data.type === "room") updateRoom(data);
 						}
 						$('#txtMessage').focus();
 					}
